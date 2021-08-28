@@ -22,6 +22,7 @@
     "express-session": "^1.17.1",
     "http-server": "^13.0.1",
     "mysql2": "^2.2.5",
+    "phaser": "^3.55.2",
     "sequelize": "^6.3.5"
   },
   "bugs": {
