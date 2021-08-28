@@ -23,7 +23,8 @@
     "http-server": "^13.0.1",
     "mysql2": "^2.2.5",
     "phaser": "^3.55.2",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "uuid": "^8.3.2"
   },
   "bugs": {
     "url": "https://github.com/kevinchewning/Minesweeper-P2/issues"
