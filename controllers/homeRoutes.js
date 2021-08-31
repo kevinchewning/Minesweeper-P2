@@ -9,7 +9,7 @@ router.get('/', withAuth, async (req, res) => {
         */
         
         res.render('minesweeper', {
-            //game: gameInstance
+            //game: gameInstance,
             logged_in: req.session.logged_in
         })
 
@@ -35,7 +35,25 @@ router.get('/login', async (req, res) => {
 // Render stats and leaderboards
 router.get('/leaderboards', async (req, res) => {
     try {
+        let userStats = undefined
+
+        // Check to see if user is logged in. If they are, get the userStats
+        if (res.session.logged_in) {
+            userStats = fetch(`/api/stats/${res.session.user.id}`)
+        }
         
+        // get leaderboards to be displayed
+        const leaderboardList = fetch('/api/leaderboards', {
+            method: 'GET'
+        })
+
+        // render page and send data for handlebars
+        res.render('leaderboards', {
+            logged_in: req.session.logged_in,
+            userStats: userStats,
+            leaderboardList: leaderboardList
+        })
+
     } catch (err) {
         res.status(500).json(err)
     }
