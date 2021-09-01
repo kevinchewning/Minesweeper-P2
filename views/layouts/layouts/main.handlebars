@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/jass.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+  <header>
+    <h1>Minesweeper</h1>
+  </header>
+  <nav class="pure-menu pure-menu-horizontal">
+      <a href="/" class="pure-menu-heading pure-menu-link">HOME</a>
+      <ul class="pure-menu-list">
+        {{#if logged_in}}
+        <li class="pure-menu-item">
+            <a href="/" class="pure-menu-link">Logout</a>
+        </li>
+        {{else}}
+        <li class="pure-menu-item">
+            <a href="/" class="pure-menu-link">Login</a>
+        </li>
+        {{/if}}
+        <li class="pure-menu-item">
+            <a href="/" class="pure-menu-link">PLAY</a>
+        </li>
+    </ul>
+  </nav>
+  <main>
+    <div class="pure-g">
+      {{{body}}}
+    </div>
+  </main>
+</body>
+
+</html>

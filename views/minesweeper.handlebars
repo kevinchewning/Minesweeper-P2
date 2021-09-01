@@ -1,0 +1,20 @@
+{{!-- If logged in allow user to play the game --}}
+{{#if logged_in}}
+<section>
+    <h1>MINESWEEPER</h1>
+    <main>
+        {{!-- Render the Minesweeper game here?? --}}
+    </main>
+    <div>
+        <style scoped="">
+            .button-xlarge {
+                font-size: 125%;
+            }
+        </style>
+        <button class="button-xlarge pure-button">START GAME</button>
+    </div> 
+</section>
+
+{{else}}
+<a href="/login">You landed on a mine! Please login first to play Mineweeper</a>
+{{/if}}
