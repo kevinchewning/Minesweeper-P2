@@ -33,7 +33,7 @@ Game.init(
     },
     player_moves: {
         type: DataTypes.INTEGER,
-
+        allowNull: false
     }
   },
   {
