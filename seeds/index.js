@@ -5,12 +5,11 @@ const seedGames = require('./gameData')
 const seedAll = async () => {
     await sequelize.sync({force: true})
 
-    await seedUsers()
-    .then(async () => {
-        await seedGames();
-
-        process.exit(0);
-    })
+    await seedUsers();
+    
+    await seedGames();
+    
+    //process.exit(0);
 };
 
 seedAll();
