@@ -13,6 +13,7 @@ var config = {
 }
 
 var game = new Phaser.Game(config)
+var gameLogic = new GameLogic(16, 16, 40)
 var map
 
 function preload() {
