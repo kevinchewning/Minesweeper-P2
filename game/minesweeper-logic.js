@@ -45,10 +45,37 @@ class GameLogic {
                 tileGrid.push(currentRow)
             }
             
+            // Return grid
             return tileGrid
         }
 
+        // A helper function which increments a Tile's adjacentMines, if that tile is valid.
+        incrementMinesIfValid = (xCoord, yCoord) => {
+            // Are the coords in range?
+            if (xCoord >= 0 && xCoord < xTiles && yCoord >= 0 && yCoord < yTiles) {
+                // Increment adjacentMines counter
+                this.gameGrid[xCoord][yCoord].incrementAdjacentMines()
+            }
+        }
 
+        // Check all tiles for mines, and update the adjacentMines counter for neighboring tiles.
+        for (let i = 0; i < yTiles; i++) {
+
+            for (let j = 0; j < xTiles; j++) {
+                // Does the current tile have a mine?
+                if (this.gameGrid[i][j].getHasMine()) {
+                    // Update all (valid) adjacent tiles
+                    incrementMinesIfValid(i - 1, j - 1)
+                    incrementMinesIfValid(i - 1, j)
+                    incrementMinesIfValid(i - 1, j + 1)
+                    incrementMinesIfValid(i, j - 1)
+                    incrementMinesIfValid(i, j + 1)
+                    incrementMinesIfValid(i + 1, j - 1)
+                    incrementMinesIfValid(i + 1, j)
+                    incrementMinesIfValid(i + 1, j + 1)
+                }
+            }
+        }
     }
 
 
