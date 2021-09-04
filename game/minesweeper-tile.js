@@ -3,22 +3,11 @@
  */
 class MinesweeperTile {
     
-    constructor() {
-        this.hasMine = false
+    constructor(hasMine) {
+        this.hasMine = hasMine
         this.isFlagged = false
         this.isUncovered = false
         this.adjacentMines = 0
-    }
-
-    /**
-     * Adds mine to MinesweeperTile.
-     */
-    addMine() {
-        if (!this.hasMine) {
-            this.hasMine = true
-        } else {
-            throw new Error('MinesweeperTile already has a mine.')
-        }
     }
 
     /**
