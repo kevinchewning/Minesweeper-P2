@@ -20,12 +20,20 @@ class MinesweeperTile {
 
     /**
      * Sets isUncovered to true.
+     * @returns an Integer representing the correct Tile index for the current Tile configuration, when uncovered by the player directly
      */
     uncoverTile() {
         if (!this.isUncovered) {
             this.isUncovered = true
         } else {
-            throw new Error('MinesweeperTile is already uncovered.')
+            //throw new Error('MinesweeperTile is already uncovered.')
+        }
+
+        // Return the tile index
+        if (this.getHasMine()) {
+            return 13
+        } else {
+            return this.getAdjacentMines()
         }
     }
 
@@ -67,5 +75,22 @@ class MinesweeperTile {
      */
     getAdjacentMines() {
         return this.adjacentMines
+    }
+
+    /**
+     * @returns an Integer representing the correct Tile index for the current Tile configuration, when uncovered by a game-ending move.
+     */
+    forceTileReveal() {
+        // Check if the tile is uncovered
+        if (!this.isUncovered()) {
+            // Check if this tile has a mine
+            if (this.hasMine) {
+                // Return the Tile index for a mine
+                return 12
+            } else if (this.isFlagged) {
+                // If this tile doesn't have a mine, but was flagged, return the Tile index for an incorrect flag
+                return 11
+            }
+        }
     }
 }

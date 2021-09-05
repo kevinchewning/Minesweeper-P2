@@ -14,8 +14,8 @@ class GameLogic {
         this.numMines = numMines
 
         // Generate grid of MinesweeperTile objects
-        this.gameGrid = generateMineArray = () => {
-            const mineList = mineListGenerator(numMines)
+        const generateMineArray = () => {
+            const mineList = mineListGenerator(numMines, xTiles * yTiles)
 
             let tileGrid = []
 
@@ -49,8 +49,10 @@ class GameLogic {
             return tileGrid
         }
 
+        this.gameGrid = generateMineArray()
+
         // A helper function which increments a Tile's adjacentMines, if that tile is valid.
-        incrementMinesIfValid = (xCoord, yCoord) => {
+        const incrementMinesIfValid = (xCoord, yCoord) => {
             // Are the coords in range?
             if (xCoord >= 0 && xCoord < xTiles && yCoord >= 0 && yCoord < yTiles) {
                 // Increment adjacentMines counter
@@ -78,20 +80,25 @@ class GameLogic {
         }
     }
 
+    getTile(xCoord, yCoord) {
+        return this.gameGrid[xCoord][yCoord]
+    }
+
 
 }
 
 /**
  * Helper function mineListGenerator returns an array of valid mine indexes, whose length matches
  * @param {number} numMines is the integer value of the number of mines required.
+ * @param {number} maxTiles is the integer value of the total number of tiles.
  */
-mineListGenerator = (numMines) => {
+mineListGenerator = (numMines, maxTiles) => {
     var mineList = []
     
     // generate mine indexes
     while (mineList.length < numMines) {
         // generate new mine location
-        const newMineIndex = Math.round(Math.random() * numMines)
+        const newMineIndex = Math.round(Math.random() * maxTiles)
 
         // verify a mine does not exist at that index already. Push the new index if confirmed.
         if (mineList.indexOf(newMineIndex) === -1) {

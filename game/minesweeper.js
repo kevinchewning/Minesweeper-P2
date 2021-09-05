@@ -15,6 +15,7 @@ var config = {
 var game = new Phaser.Game(config)
 var gameLogic = new GameLogic(16, 16, 40)
 var map
+var gameState = 'menu'
 
 function preload() {
     
@@ -23,6 +24,7 @@ function preload() {
 
 function create() {
     
+    // Create starter tilemap data. All tiles are 'uncovered'.
     var mapStart = [
         [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
         [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -42,12 +44,45 @@ function create() {
         [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
     ]
 
+    // Initialize tilemap and data
     map = this.make.tilemap({ data: mapStart, tileWidth: 32, tileHeight: 32})
     var tiles = map.addTilesetImage("defaultTiles")
     var layer = map.createLayer('layer', tiles, 44, 244)
 
+    // map the CTRL key
+    ctrlKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL)
+
 }
 
 function update(time, delta) {
+    
+    // Get current pointer coord
+    var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main)
 
+    // Rounds down to nearest tile
+    var pointerTileX = map.worldToTileX(worldPoint.x)
+    var pointerTileY = map.worldToTileY(worldPoint.y)
+
+    if (this.input.manager.activePointer.isDown) {
+        // Check if within a valid tile
+        //console.log(pointerTileX, pointerTileY)
+
+        if (pointerTileX !== undefined && pointerTileY !== undefined) {
+            
+            // Get current clicked tile
+            const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
+            
+            // Check if CRTL key is pressed
+            if (ctrlKey.isDown && pointerTileX !== null && pointerTileY !== null) {
+                // Reverse the toggle
+                clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
+            } else {
+                // Begin swept logic
+                const newTileIndex = clickedTile.uncoverTile()
+                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+            }
+        }
+        
+        
+    }
 }
