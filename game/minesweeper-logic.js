@@ -80,8 +80,27 @@ class GameLogic {
         }
     }
 
+    /**
+     * 
+     * @param {number} xCoord is the x coordinate of the Tile
+     * @param {number} yCoord is the y coordinate of the Tile
+     * @returns the MinesweeperTile object of the appropraite tile
+     */
     getTile(xCoord, yCoord) {
         return this.gameGrid[xCoord][yCoord]
+    }
+
+    /**
+     * @param {number} xCoord is the x coordinate of the Tile
+     * @param {number} yCoord is the y coordinate of the Tile
+     * @returns a boolean value signifying if the Tile is within the grid range or not
+     */
+    isTileInRange(xCoord, yCoord) {
+        if (xCoord >= 0 && xCoord < this.xTiles && yCoord >= 0 && yCoord < this.yTiles) {
+            return true
+        } else {
+            return false
+        }
     }
 
 

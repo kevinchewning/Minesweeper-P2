@@ -16,6 +16,13 @@ class MinesweeperTile {
      */
     setIsFlagged(bool) {
         this.isFlagged = bool
+
+        // Return the tile index
+        if (bool && this.getIsUncovered()) {
+            return 9
+        } else if (this.getIsUncovered()) {
+            return 10
+        }
     }
 
     /**

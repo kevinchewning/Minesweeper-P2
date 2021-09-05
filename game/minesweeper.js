@@ -63,26 +63,52 @@ function update(time, delta) {
     var pointerTileX = map.worldToTileX(worldPoint.x)
     var pointerTileY = map.worldToTileY(worldPoint.y)
 
-    if (this.input.manager.activePointer.isDown) {
+    // Check if within a valid tile
+    if (gameLogic.isTileInRange(pointerTileX, pointerTileY)) {
+
+        if (this.input.manager.activePointer.leftButtonDown && ctrlKey.isDown) {
+            const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
+
+            // Reverse the toggle
+            const newTileIndex = clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
+            map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+            
+        } else if (this.input.manager.activePointer.leftButtonDown) {
+            
+            const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
+            
+            // Begin swept logic
+            if (!clickedTile.getIsUncovered()) {
+                const newTileIndex = clickedTile.uncoverTile()
+                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+            }
+        }
+    }
+
+    /*
+    if (this.input.manager.activePointer.leftButtonDown) {
         // Check if within a valid tile
         //console.log(pointerTileX, pointerTileY)
 
-        if (pointerTileX !== undefined && pointerTileY !== undefined) {
+        if (gameLogic.isTileInRange(pointerTileX, pointerTileY)) {
             
             // Get current clicked tile
             const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
             
             // Check if CRTL key is pressed
-            if (ctrlKey.isDown && pointerTileX !== null && pointerTileY !== null) {
+            if (ctrlKey.isDown) {
                 // Reverse the toggle
-                clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
+                const newTileIndex = clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
+                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
             } else {
                 // Begin swept logic
-                const newTileIndex = clickedTile.uncoverTile()
-                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+                if (!clickedTile.getIsUncovered()) {
+                    const newTileIndex = clickedTile.uncoverTile()
+                    map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+                }
             }
         }
         
         
-    }
+    } */
 }
