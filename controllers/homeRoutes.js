@@ -2,6 +2,10 @@ const router = require('express').Router()
 const { Game, User } = require('../models')
 const withAuth = require('../utils/auth')
 
+
+router.get('/signup', (req, res) => {
+    res.render('signup');
+})
 // Render root page
 router.get('/', withAuth, async (req, res) => {
     try {
@@ -31,7 +35,7 @@ router.get('/login', async (req, res) => {
     } catch (err) {
         res.status(500).json(err)
     }
-})
+});
 
 // Render stats and leaderboards
 router.get('/leaderboards', async (req, res) => {
