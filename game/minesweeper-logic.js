@@ -9,9 +9,14 @@ class GameLogic {
      * @param {number} numMines Number of mines
      */
     constructor(xTiles, yTiles, numMines) {
+        // Save input variables
         this.xTiles = xTiles
         this.yTiles = yTiles
         this.numMines = numMines
+
+        // Declare game counters
+        this.score = 0
+        this.remainingTiles = (xTiles * yTiles) - numMines
 
         // Generate grid of MinesweeperTile objects
         const generateMineArray = () => {
@@ -103,7 +108,104 @@ class GameLogic {
         }
     }
 
+    /**
+     * 
+     * @param {number} xCoord is the x coordinate of the Tile
+     * @param {number} yCoord is the y coordinate of the Tile
+     */
+    tileUncovered(xCoord, yCoord) {
+        // Get a copy of the last clicked Tile
+        const clickedTile = this.getTile(xCoord, yCoord)
 
+        // Check if we just uncovered a mine or a tile with 0 neighboring mines.
+        if (clickedTile.hasMine) {
+            return {
+                logicType: 'gameOver',
+                logic: this.gameEndingLogic()
+            }
+        } else if (clickedTile.getAdjacentMines() === 0) {
+            return {
+                logicType: 'massUncover',
+                logic: this.massUncoverLogic(xCoord, yCoord)
+            }
+        } else {
+            this.awardPoints(clickedTile)
+        }
+    }
+
+    awardPoints(tileObject) {
+        this.score += 100 * tileObject.getAdjacentMines()
+    }
+
+    gameEndingLogic() {
+
+    }
+
+    massUncoverLogic(xCoord, yCoord) {
+        // Set up sorting arrays for tracking
+        var tilesToIgnore = []
+        var tilesToUncover = []
+        var unchecked = [{x: xCoord, y: yCoord}]
+
+        /**
+         * Loop through all unchecked tiles. If the current tile is empty, check all neighbors.
+         * Sort each tile into the appropriate array until there are no more tiles to check.
+         */
+        while (unchecked.length > 0) {
+            // Get the current tile
+            const currentTile = this.getTile(unchecked[0].x, unchecked[0].y)
+
+            // Function to check if tile exists & whether it is already in an array.
+            const addToUncheckedIfValid = (coordObject) => {
+                // Callback function for all .some calls
+                const matches = (coord) => coord.x === coordObject.x && coord.y === coordObject.y
+
+                if (this.isTileInRange(coordObject.x, coordObject.y) && 
+                !tilesToIgnore.some(matches) && 
+                !tilesToUncover.some(matches) &&
+                !unchecked.some(matches)
+                ) {
+                    unchecked.push(coordObject)
+                }
+            }
+
+            // Check adjacentMines counter to determine if we must check adjacent Tiles
+            if (currentTile.getAdjacentMines() === 0) {
+                const tilesToCheck = [
+                    {x: unchecked[0].x - 1, y: unchecked[0].y - 1},
+                    {x: unchecked[0].x - 1, y: unchecked[0].y},
+                    {x: unchecked[0].x - 1, y: unchecked[0].y + 1},
+                    {x: unchecked[0].x, y: unchecked[0].y - 1},
+                    {x: unchecked[0].x, y: unchecked[0].y + 1},
+                    {x: unchecked[0].x + 1, y: unchecked[0].y - 1},
+                    {x: unchecked[0].x + 1, y: unchecked[0].y},
+                    {x: unchecked[0].x + 1, y: unchecked[0].y + 1}
+                ]
+
+                // Check tiles and add to unchecked
+                tilesToCheck.forEach(coordPair => {
+                    addToUncheckedIfValid(coordPair)
+                })
+            }
+            
+            // Determine correct placement of the current Tile
+            if (currentTile.getIsUncovered()) {
+                // Already uncovered, no need to do antyhing
+                tilesToIgnore.push(unchecked[0])
+                unchecked.shift()
+            } else {
+                // Uncover
+                currentTile.uncoverTile()
+                this.awardPoints(currentTile)
+                tilesToUncover.push(unchecked[0])
+                unchecked.shift()
+            }
+            console.log(unchecked.length)
+        }
+
+        // Return list of coords to update
+        return tilesToUncover
+    }
 }
 
 /**

@@ -8,6 +8,7 @@ class MinesweeperTile {
         this.isFlagged = false
         this.isUncovered = false
         this.adjacentMines = 0
+        this.tileIndex = 9
     }
 
     /**
@@ -15,13 +16,21 @@ class MinesweeperTile {
      * @param {Boolean} bool 
      */
     setIsFlagged(bool) {
-        this.isFlagged = bool
+        
 
-        // Return the tile index
-        if (bool && this.getIsUncovered()) {
-            return 9
-        } else if (this.getIsUncovered()) {
-            return 10
+        // Flag can only be toggled if the tile is not uncovered
+        if (bool && !this.getIsUncovered()) {
+            this.isFlagged = bool
+            
+            this.tileIndex = 10
+            return this.tileIndex
+        } else if (!this.getIsUncovered()) {
+            this.isFlagged = bool
+            
+            this.tileIndex = 9
+            return this.tileIndex
+        } else {
+            return this.tileIndex
         }
     }
 
@@ -33,14 +42,16 @@ class MinesweeperTile {
         if (!this.isUncovered) {
             this.isUncovered = true
         } else {
-            //throw new Error('MinesweeperTile is already uncovered.')
+            console.log('MinesweeperTile is already uncovered.')
         }
 
-        // Return the tile index
+        // Set and return the tile index
         if (this.getHasMine()) {
-            return 13
+            this.tileIndex = 13
+            return this.tileIndex
         } else {
-            return this.getAdjacentMines()
+            this.tileIndex = this.getAdjacentMines()
+            return this.tileIndex
         }
     }
 
@@ -85,6 +96,13 @@ class MinesweeperTile {
     }
 
     /**
+     * @returns an Integer value representing the Tile Index
+     */
+    getTileIndex() {
+        return this.tileIndex
+    }
+
+    /**
      * @returns an Integer representing the correct Tile index for the current Tile configuration, when uncovered by a game-ending move.
      */
     forceTileReveal() {
@@ -93,10 +111,12 @@ class MinesweeperTile {
             // Check if this tile has a mine
             if (this.hasMine) {
                 // Return the Tile index for a mine
-                return 12
+                this.tileIndex = 12
+                return this.tileIndex
             } else if (this.isFlagged) {
                 // If this tile doesn't have a mine, but was flagged, return the Tile index for an incorrect flag
-                return 11
+                this.tileIndex = 11
+                return this.tileIndex
             }
         }
     }

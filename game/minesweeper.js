@@ -16,6 +16,7 @@ var game = new Phaser.Game(config)
 var gameLogic = new GameLogic(16, 16, 40)
 var map
 var gameState = 'menu'
+var recievingInput = false
 
 function preload() {
     
@@ -50,7 +51,7 @@ function create() {
     var layer = map.createLayer('layer', tiles, 44, 244)
 
     // map the CTRL key
-    ctrlKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL)
+    shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
 
 }
 
@@ -63,52 +64,42 @@ function update(time, delta) {
     var pointerTileX = map.worldToTileX(worldPoint.x)
     var pointerTileY = map.worldToTileY(worldPoint.y)
 
-    // Check if within a valid tile
-    if (gameLogic.isTileInRange(pointerTileX, pointerTileY)) {
-
-        if (this.input.manager.activePointer.leftButtonDown && ctrlKey.isDown) {
-            const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
-
-            // Reverse the toggle
-            const newTileIndex = clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
-            map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
-            
-        } else if (this.input.manager.activePointer.leftButtonDown) {
-            
-            const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
-            
-            // Begin swept logic
-            if (!clickedTile.getIsUncovered()) {
-                const newTileIndex = clickedTile.uncoverTile()
-                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
-            }
-        }
-    }
-
-    /*
-    if (this.input.manager.activePointer.leftButtonDown) {
+    if (this.input.manager.activePointer.primaryDown && !recievingInput) {
+        // Toggle recievingInput
+        recievingInput = true
+        
         // Check if within a valid tile
-        //console.log(pointerTileX, pointerTileY)
-
         if (gameLogic.isTileInRange(pointerTileX, pointerTileY)) {
             
             // Get current clicked tile
             const clickedTile = gameLogic.getTile(pointerTileX, pointerTileY)
             
             // Check if CRTL key is pressed
-            if (ctrlKey.isDown) {
+            if (shiftKey.isDown) {
                 // Reverse the toggle
                 const newTileIndex = clickedTile.setIsFlagged(!clickedTile.getIsFlagged())
                 map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
-            } else {
+            } else if (!clickedTile.getIsUncovered()) {
                 // Begin swept logic
-                if (!clickedTile.getIsUncovered()) {
-                    const newTileIndex = clickedTile.uncoverTile()
-                    map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+                const newTileIndex = clickedTile.uncoverTile()
+                map.putTileAt(newTileIndex, pointerTileX, pointerTileY)
+
+                // We just uncovered a tile, now we must check for 0 or a mine for further game logic.
+                const additionalLogic = gameLogic.tileUncovered(pointerTileX, pointerTileY)
+                if (additionalLogic && additionalLogic.logicType === 'gameOver') {
+                    
+                } else if (additionalLogic && additionalLogic.logicType === 'massUncover') {
+                    additionalLogic.logic.forEach((coordPair) => {
+                        const index = gameLogic.getTile(coordPair.x, coordPair.y).getTileIndex()
+                        map.putTileAt(index, coordPair.x, coordPair.y)
+                    })
                 }
             }
         }
         
         
-    } */
+    } else if (!this.input.manager.activePointer.primaryDown) {
+        // User released left click
+        recievingInput = false
+    }
 }
