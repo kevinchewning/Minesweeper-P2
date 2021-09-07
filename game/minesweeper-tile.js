@@ -107,7 +107,7 @@ class MinesweeperTile {
      */
     forceTileReveal() {
         // Check if the tile is uncovered
-        if (!this.isUncovered()) {
+        if (!this.getIsUncovered()) {
             // Check if this tile has a mine
             if (this.hasMine) {
                 // Return the Tile index for a mine

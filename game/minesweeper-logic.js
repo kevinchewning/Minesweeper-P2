@@ -16,6 +16,7 @@ class GameLogic {
 
         // Declare game counters
         this.score = 0
+        this.playerMoves
         this.remainingTiles = (xTiles * yTiles) - numMines
 
         // Generate grid of MinesweeperTile objects
@@ -114,6 +115,9 @@ class GameLogic {
      * @param {number} yCoord is the y coordinate of the Tile
      */
     tileUncovered(xCoord, yCoord) {
+        // Increment counter for player moves
+        this.playerMoves++
+        
         // Get a copy of the last clicked Tile
         const clickedTile = this.getTile(xCoord, yCoord)
 
@@ -133,14 +137,54 @@ class GameLogic {
         }
     }
 
+    /**
+     * Takes in a 'tileObject' and awards points based on adjacent mines.
+     * @param {Object} tileObject a MinesweeperTile object.
+     */
     awardPoints(tileObject) {
         this.score += 100 * tileObject.getAdjacentMines()
+        this.remainingTiles--
     }
 
+    /**
+     * @returns the game's current score.
+     */
+    getPoints() {
+        return this.score
+    }
+
+    /**
+     * A function that returns all tiles that must be revealed, after a game-losing move.
+     * @returns an Object containing an array of Tiles to iterate over and reveal.
+     */
     gameEndingLogic() {
+        var tilesToUncover = []
 
+        for (let i = 0; i < this.xTiles; i++) {
+            for (let j = 0; j < this.yTiles; j++) {
+                // Get current tile
+                const tile = this.getTile(i, j)
+
+                if (!tile.getIsUncovered() && (tile.getHasMine() || !tile.getHasMine() && tile.getIsFlagged())) {
+                    // Add current tile coords to list
+                    tilesToUncover.push({x: i, y: j})
+
+                    // Force reveal mine
+                    tile.forceTileReveal()
+                }
+            }
+        }
+
+        // Return list of coords to update
+        return tilesToUncover
     }
 
+    /**
+     * A function that returns all tiles that must be revealed, taking in the X and Y coords of a 0 tile.
+     * @param {number} xCoord is the x coordinate of the Tile
+     * @param {number} yCoord is the y coordinate of the Tile
+     * @returns an Object containing an array of Tiles to iterate over and reveal.
+     */
     massUncoverLogic(xCoord, yCoord) {
         // Set up sorting arrays for tracking
         var tilesToIgnore = []
@@ -200,7 +244,6 @@ class GameLogic {
                 tilesToUncover.push(unchecked[0])
                 unchecked.shift()
             }
-            console.log(unchecked.length)
         }
 
         // Return list of coords to update
