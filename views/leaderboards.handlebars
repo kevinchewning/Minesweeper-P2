@@ -1,16 +1,15 @@
-{{!-- If logged in show different stats and leaderboards --}}
-{{#if logged_in}}
-<h2>Welcome {{User.username}}!</h2>
+<h2 class= "lb-title">LEADERBOARDS</h2>
+<br>
+<h4>Welcome {{User.username}}!</h4>
+<br>
+<body>
+    <div class= "pure-control-group">
+    {{#each User}}
+        <div>
+            {{this.}}
+        </div>
+    {{/each}}
+    </div>
+</body>
 
 
-{{!-- LOGGED IN USER STATS --}}
-
-<!--CHECK OUT TO HELP RENDER DIFFERENT STAT TABLES?? https://purecss.io/tables/ -->
-
-{{!-- GLOBAL STATS FOR ALL USERS --}}
-
-
-{{!-- If not currently logged in, provides link to login page --}}
-{{else}}
-<a href="/login">You landed on a mine! Please login first to play Mineweeper</a>
-{{/if}}

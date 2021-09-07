@@ -3,9 +3,6 @@ const { Game, User } = require('../models')
 const withAuth = require('../utils/auth')
 
 
-router.get('/signup', (req, res) => {
-    res.render('signup');
-})
 // Render root page
 router.get('/', withAuth, async (req, res) => {
     try {
@@ -23,6 +20,11 @@ router.get('/', withAuth, async (req, res) => {
     }
 })
 
+// Render signup page
+router.get('/signup', async (req, res) => {
+    res.render('signup');
+})
+
 // Render login page
 router.get('/login', async (req, res) => {
     try {
@@ -38,7 +40,7 @@ router.get('/login', async (req, res) => {
 });
 
 // Render stats and leaderboards
-router.get('/leaderboards', async (req, res) => {
+/*router.get('/leaderboards', async (req, res) => {
     try {
         //Retrieve Data Before Converting to Stats
         const dbUserGameData = await Game.findAll({
@@ -159,16 +161,19 @@ router.get('/leaderboards', async (req, res) => {
         }
 
         //Render page with new objects
-        res.render('leaderboards', {
-            stats,
-            leaders,
-            logged_in: req.session.logged_in
-        })
+        res.render('leaderboards')//, {
+           // stats,
+           // leaders,
+           // logged_in: req.session.logged_in
+       // })
 
     } catch (err) {
         res.status(500).json(err)
     }
-})
+})*/
+router.get('/leaderboards', (req, res) => {
+    res.render('leaderboards');
+});
 
 // Export router
 module.exports = router

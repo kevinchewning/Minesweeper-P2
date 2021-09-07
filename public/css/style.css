@@ -13,14 +13,18 @@
     color: black;
 }
 
-h1{
+h1 {
     text-align: center;
     color: #203647;
     text-shadow: #EEFBFB; 
     text-decoration: underline;
 }
 
-h4 {
+h2, h4 {
     text-align: center;
     color: #203647;
+}
+
+.lb-title {
+    width: 100%;
 }
