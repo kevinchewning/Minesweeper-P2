@@ -2,11 +2,13 @@
 <br>
 <h4>Welcome {{User.username}}!</h4>
 <br>
-<body>
-    <div class= "pure-control-group">
+    <div>
     {{#each User}}
-        <div>
-            {{this.}}
+        <div class= "pure-u-1-3">
+            <h5>Game Stats for {{this.username}} </h5>
+            <ol>
+                <li>{{}}</li>
+            </ol>
         </div>
     {{/each}}
     </div>
