@@ -1,5 +1,6 @@
 const signupFormHandler = async (event) => {
     event.preventDefault();
+    console.log('click')
   
     const username = document.querySelector('#username-signup').value.trim();
     const email = document.querySelector('#email-signup').value.trim();
@@ -13,7 +14,7 @@ const signupFormHandler = async (event) => {
       });
   
       if (response.ok) {
-        document.location.replace('/');
+        document.location.replace('/minesweeper');
       } else {
         alert('Failed to sign up.');
       }

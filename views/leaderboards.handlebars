@@ -1,15 +1,19 @@
 <h2 class= "lb-title">LEADERBOARDS</h2>
 <br>
-<h4>Welcome {{User.username}}!</h4>
+<h4>Welcome {{user.username}}!</h4>
 <br>
-<body>
+{{!-- Stats --}}
+{{stats.avgScore}}
+{{!-- Leaderboard --}}
     <div class= "pure-control-group">
-    {{#each User}}
+    {{#each leaders}}
         <div>
-            {{this.}}
+            {{username}}
+            {{score}}
+            {{created_at}}
         </div>
     {{/each}}
     </div>
-</body>
+
 
 
