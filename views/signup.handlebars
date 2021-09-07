@@ -1,22 +1,22 @@
 <h4>To begin playing Minesweeper please signup by filling out the form below.</h4>
-<form class="pure-form pure-form-aligned">
+<form class="pure-form pure-form-aligned signup-form">
     <fieldset>
         <div class="pure-control-group">
-            <label id= "username-signup" for="aligned-name">Username</label>
-            <input type="text" id="aligned-name" placeholder="Username" required="" />
+            <label for="aligned-name">Username</label>
+            <input type="text" id= "username-signup" name="aligned-name" placeholder="Username" required="" />
         </div>
         <div class="pure-control-group">
-            <label id= "email-signup" for="aligned-email">Email Address</label>
-            <input type="email" id="aligned-email" placeholder="Email Address" required="" />
+            <label for="aligned-email">Email Address</label>
+            <input id= "email-signup" type="email" name="aligned-email" placeholder="Email Address" required="" />
         </div>
         <div class="pure-control-group">
-            <label id=" password-signup" for="aligned-password">Password</label>
-            <input type="password" id="aligned-password" placeholder="Password" required="" />
+            <label for="aligned-password">Password</label>
+            <input id="password-signup"  type="password" name="aligned-password" placeholder="Password" required="" />
         </div>
         <div class="pure-controls">
-            <button type="submit" class="pure-button pure-button-primary signup-form"><a href= "../login">SIGNUP</a></button>
+            <button type="submit" class="pure-button pure-button-primary">SIGNUP</button>
         </div>
     </fieldset>
 </form>
 
-<script src="../public/js/createUser.js"></script>
+<script src="/js/createUser.js"></script>
