@@ -1,0 +1,30 @@
+* {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 30px;
+    letter-spacing: 3px;
+    margin: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #4DA8DA;
+    color: #EEFBFB;
+}
+
+.navbar {
+    color: black;
+}
+
+h1 {
+    text-align: center;
+    color: #203647;
+    text-shadow: #EEFBFB; 
+    text-decoration: underline;
+}
+
+h2, h4, h5 {
+    text-align: center;
+    color: #203647;
+}
+
+.lb-title {
+    width: 100%;
+}

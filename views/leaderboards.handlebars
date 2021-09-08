@@ -1,0 +1,34 @@
+<h2 class= "lb-title">LEADERBOARDS</h2>
+<br>
+<br>
+{{!-- Stats --}}
+{{#if logged_in}}
+<div>
+    <h4>{{user.username}} Game Stats</h4>
+    <ul>
+        <li>{{stats.wins}}</li>
+        <li>{{stats.losses}}</li>
+        <li>{{stats.avgScore}}</li>
+        <li>{{stats.bestScore}}</li>
+        <li>{{stats.worstScore}}</li>
+        <li>{{stats.immediateLosses}}</li>
+    </ul>
+</div>
+
+{{!-- Leaderboard --}}
+{{else}}
+<div>
+    <h4>Global Leaderboard</h4>
+{{#each leaders}}
+    <div>
+        {{username}}
+        {{score}}
+        {{created_at}}
+    </div>
+{{/each}}
+</div>
+
+{{/if}}
+
+
+

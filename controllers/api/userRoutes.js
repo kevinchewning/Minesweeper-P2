@@ -5,60 +5,73 @@ const { User } = require('../../models')
 // New user: verify and then post new credentials
 router.post('/signup', async (req, res) => {
     try {
-        // get the new user credentials from the body
-        const newUser = req.body
-
         // Check to see if this user already exists
-        const existingUser = await User.findOne({ where: { email: newUser.email } })
-        if (existingUser) {
+        //Email
+        const existingUserEmail = await User.findOne({ where: { email: req.body.email } })
+        if (existingUserEmail) {
             res.status(400).json({ message: 'This user already exists! Please login.' })
-            return
+            return;
         }
 
-        // hash the password and overwrite
-        newUser.password = await bcrypt.hash(req.body.password, 9)
+        //Username
+        const existingUsername = await User.findOne({ where: { email: req.body.username } })
+        if (existingUsername) {
+            res.status(400).json({ message: 'This user already exists! Please login.' })
+            return;
+        }
 
-        // create the newUser with the hashed password and save to DB
-        const userData = await User.create(newUser)
+        const dbUserData = await User.create({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        });
 
-        // send a response of 200 (success) and our userData object
-        res.status(200).json(userData)
+
+        req.session.save(() => {
+            req.session.user = dbUserData;
+            req.session.logged_in = true;
+
+            res.json({ user: dbUserData, message: 'You are now signed up!' })
+        });        
     } catch (err) {
-        res.status(400).json(err)
+        console.log(err);
+        res.status(500).json(err);
     }
-})
+});
 
 // Existing user: verify credentials and update session
 router.post('/login', async (req, res) => {
     try {
-        // get request body credentials
-        const loginInfo = req.body
-
-        // get matching user data (if it exists)
-        const userData = await User.findOne({ where: { email: loginInfo.email } })
-
-        // check for matching user
+        const userData = await User.findOne({ where: { email: req.body.email } });
+    
         if (!userData) {
-            res.status(400).json({ message: 'Incorrect email or password.' })
+          res
+            .status(400)
+            .json({ message: 'Incorrect email, please try again' });
+          return;
         }
-
-        // check for matching password
-        const passwordCorrect = bcrypt.compareSync(loginInfo.password, userData.password)
-        if (!passwordCorrect) {
-            res.status(400).json({ message: 'Incorrect email or password.' })
+    
+        const validPassword = await userData.checkPassword(req.body.password);
+            
+        if (!validPassword) {
+          res
+            .status(400)
+            .json({ message: 'Incorrect password, please try again' });
+          return;
         }
+    
+        userData.get({plain: true})
 
-        // save data to session
         req.session.save(() => {
-            req.session.logged_in = true
-            req.session.user = userData
-        })
-
-        // success response
-        res.status(200).json({ user: userData, message: `User '${userData.username}' is now logged in.`})
-
+          req.session.user = userData
+          req.session.logged_in = true;
+          
+          res.json({ user: userData, message: 'You are now logged in!' });
+        });
+    
+    
     } catch (err) {
-        res.status(400).json(err)
+        res.status(400).json(err);
     }
 })
 

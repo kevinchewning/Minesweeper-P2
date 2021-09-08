@@ -2,6 +2,7 @@ const router = require('express').Router()
 const { Game, User } = require('../models')
 const withAuth = require('../utils/auth')
 
+
 // Render root page
 router.get('/', withAuth, async (req, res) => {
     try {
@@ -11,12 +12,18 @@ router.get('/', withAuth, async (req, res) => {
         
         res.render('minesweeper', {
             //game: gameInstance,
+            user: req.session.user,
             logged_in: req.session.logged_in
         })
 
     } catch (err) {
         res.status(500).json(err)
     }
+})
+
+// Render signup page
+router.get('/signup', async (req, res) => {
+    res.render('signup');
 })
 
 // Render login page
@@ -31,15 +38,15 @@ router.get('/login', async (req, res) => {
     } catch (err) {
         res.status(500).json(err)
     }
-})
+});
 
 // Render stats and leaderboards
-router.get('/leaderboards', async (req, res) => {
+router.get('/leaderboards', withAuth, async (req, res) => {
     try {
         //Retrieve Data Before Converting to Stats
         const dbUserGameData = await Game.findAll({
             where: {
-                user_id: req.session.user_id
+                user_id: req.session.user.id
             },
             attributes: ['score', 'duration', 'win' , 'player_moves']
         })
@@ -137,31 +144,31 @@ router.get('/leaderboards', async (req, res) => {
 
         //Create stats object
         const stats = {
-            avgScore: userAvgScore,
-            wins: userWins,
-            losses: userLosses,
-            bestScore: bestScore,
-            worstScore: worstScore,
-            immediateLosses: immediateLosses
+            totalGames: userGameData.length,
+            avgScore: userAvgScore(),
+            wins: userWins(),
+            losses: userLosses(),
+            bestScore: bestScore(),
+            worstScore: worstScore(),
+            immediateLosses: immediateLosses()
         }
+        
 
         //Sort game data by score
-        const leaders = () => {
-            let scores = dbGameData.sort((a, b) => b.score - a.score)
-            
-            scores.splice(10)
-
-            return scores;
-        }
+        const leaders = gameData.sort((a, b) => b.score - a.score)
+        
+        leaders.splice(10)
 
         //Render page with new objects
         res.render('leaderboards', {
-            stats,
-            leaders,
-            logged_in: req.session.logged_in
-        })
+           stats,
+           leaders,
+           user: req.session.user,
+           logged_in: req.session.logged_in
+       })
 
     } catch (err) {
+        console.log(err)
         res.status(500).json(err)
     }
 })
