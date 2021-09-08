@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-  <script> var userID = {{user.id}} </script>
+  <script> var userID = `{{user.id}}` </script>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
             <a href="../leaderboards" class="pure-menu-link navbar">Leaderboard</a>
         </li>
         <li class="pure-menu-item">
-            <a href="/" class="pure-menu-link navbar">Logout</a>
+            <a id="logout" class="pure-menu-link navbar">Logout</a>
         </li>
         {{else}}
         <li class="pure-menu-heading pure-menu-link">
@@ -40,5 +40,8 @@
       {{{body}}}
     </div>
   </main>
+
+  {{#if logged_in}}
+  <script src="/js/logout.js"></script>
+  {{/if}}
 </body>
-</html>

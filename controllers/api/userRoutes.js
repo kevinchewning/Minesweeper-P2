@@ -5,34 +5,39 @@ const { User } = require('../../models')
 // New user: verify and then post new credentials
 router.post('/signup', async (req, res) => {
     try {
-        // get the new user credentials from the body
-        const newUser = req.body
-
         // Check to see if this user already exists
-        const existingUser = await User.findOne({ where: { email: newUser.email } })
-        if (existingUser) {
+        //Email
+        const existingUserEmail = await User.findOne({ where: { email: req.body.email } })
+        if (existingUserEmail) {
             res.status(400).json({ message: 'This user already exists! Please login.' })
-            return
+            return;
         }
 
-        // hash the password and overwrite
-        newUser.password = await bcrypt.hash(req.body.password, 9)
+        //Username
+        const existingUsername = await User.findOne({ where: { email: req.body.username } })
+        if (existingUsername) {
+            res.status(400).json({ message: 'This user already exists! Please login.' })
+            return;
+        }
 
-        // create the newUser with the hashed password and save to DB
-        const userData = await User.create(newUser)
-
-        //Create session on success
-        req.session.save(() => {
-            req.session.user = userData,
-            req.session.logged_in = true;
+        const dbUserData = await User.create({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
         });
 
-        // send a response of 200 (success) and our userData object
-        res.status(200).json(userData)
+
+        req.session.save(() => {
+            req.session.user = dbUserData;
+            req.session.logged_in = true;
+
+            res.json({ user: dbUserData, message: 'You are now signed up!' })
+        });        
     } catch (err) {
-        res.status(400).json(err)
+        console.log(err);
+        res.status(500).json(err);
     }
-})
+});
 
 // Existing user: verify credentials and update session
 router.post('/login', async (req, res) => {
@@ -42,7 +47,7 @@ router.post('/login', async (req, res) => {
         if (!userData) {
           res
             .status(400)
-            .json({ message: 'Incorrect Email or password, please try again' });
+            .json({ message: 'Incorrect email, please try again' });
           return;
         }
     
@@ -51,7 +56,7 @@ router.post('/login', async (req, res) => {
         if (!validPassword) {
           res
             .status(400)
-            .json({ message: 'Incorrect email or Password, please try again' });
+            .json({ message: 'Incorrect password, please try again' });
           return;
         }
     
@@ -60,8 +65,6 @@ router.post('/login', async (req, res) => {
         req.session.save(() => {
           req.session.user = userData
           req.session.logged_in = true;
-    
-          console.log(req.session)
           
           res.json({ user: userData, message: 'You are now logged in!' });
         });

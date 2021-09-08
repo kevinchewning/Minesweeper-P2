@@ -41,12 +41,12 @@ router.get('/login', async (req, res) => {
 });
 
 // Render stats and leaderboards
-router.get('/leaderboards', async (req, res) => {
+router.get('/leaderboards', withAuth, async (req, res) => {
     try {
         //Retrieve Data Before Converting to Stats
         const dbUserGameData = await Game.findAll({
             where: {
-                user_id: req.session.user_id
+                user_id: req.session.user.id
             },
             attributes: ['score', 'duration', 'win' , 'player_moves']
         })
@@ -144,22 +144,20 @@ router.get('/leaderboards', async (req, res) => {
 
         //Create stats object
         const stats = {
-            avgScore: userAvgScore,
-            wins: userWins,
-            losses: userLosses,
-            bestScore: bestScore,
-            worstScore: worstScore,
-            immediateLosses: immediateLosses
+            totalGames: userGameData.length,
+            avgScore: userAvgScore(),
+            wins: userWins(),
+            losses: userLosses(),
+            bestScore: bestScore(),
+            worstScore: worstScore(),
+            immediateLosses: immediateLosses()
         }
+        
 
         //Sort game data by score
-        const leaders = () => {
-            let scores = gameData.sort((a, b) => b.score - a.score)
-            
-            scores.splice(10)
-
-            return scores;
-        }
+        const leaders = gameData.sort((a, b) => b.score - a.score)
+        
+        leaders.splice(10)
 
         //Render page with new objects
         res.render('leaderboards', {
@@ -174,9 +172,6 @@ router.get('/leaderboards', async (req, res) => {
         res.status(500).json(err)
     }
 })
-// router.get('/leaderboards', (req, res) => {
-//     res.render('leaderboards');
-// });
 
 // Export router
 module.exports = router
