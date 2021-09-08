@@ -3,6 +3,7 @@
 <br>
 {{!-- Stats --}}
 {{#if logged_in}}
+{{#if stats.totalGames}}
 <div>
     <h4>{{user.username}} Game Stats</h4>
     <ul>
@@ -14,21 +15,24 @@
         <li>{{stats.immediateLosses}}</li>
     </ul>
 </div>
+{{else}}
+<h4>{{user.username}} hasn't played any games!</h4>
+{{/if}}
+{{/if}}
 
 {{!-- Leaderboard --}}
-{{else}}
 <div>
     <h4>Global Leaderboard</h4>
 {{#each leaders}}
     <div>
-        {{username}}
+        {{user.username}}
         {{score}}
-        {{created_at}}
+        {{format_date created_at}}
     </div>
 {{/each}}
 </div>
 
-{{/if}}
+
 
 
 
