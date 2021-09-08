@@ -22,6 +22,7 @@ var timer
 var timerEvent
 var scoreText
 var timerText
+var endText
 
 const timeLimit = 180
 
@@ -61,14 +62,14 @@ function create() {
     shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
 
     // Initialize timer
-    timer = new Phaser.Time.TimerEvent({ delay: 1000 * timeLimit })
+    timer = new Phaser.Time.TimerEvent({ delay: 1000 * timeLimit, callback: outOfTime_Callback, callbackScope: this })
     timerEvent = this.time.addEvent(timer)
 
     // Initialize text
     const textSettings = { fontFamily: 'Trebuchet MS, sans-serif, serif', fontSize: '32px', stroke: '#000', strokeThickness: 3 }
     scoreText = this.add.text(44, 44, 'Score: 0', textSettings)
     timerText = this.add.text(410, 44, `Time: ${timeLimit}`, textSettings)
-
+    endText = this.add.text(44, 110, ``, textSettings)
 }
 
 function update(time, delta) {
@@ -120,6 +121,11 @@ function update(time, delta) {
                             // Pause the clock
                             timerEvent.paused = true
                             playable = false
+
+                            endText.setText(`Refresh to try again!`)
+
+                            // Post scores
+                            postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), false, gameLogic.getPlayerMoves())
                         })
                     } else if (additionalLogic && additionalLogic.logicType === 'massUncover') {
                         // Update tile displays
@@ -135,5 +141,69 @@ function update(time, delta) {
             // User released left click
             recievingInput = false
         }
+
+        // Check to see if player has won
+        if (gameLogic.getRemainingTiles() === 0) {
+            // Pause the clock
+            timerEvent.paused = true
+            playable = false
+
+            endText.setText(`YOU WON!`)
+
+            // Caluclate final score
+            const finalScore = gameLogic.getPoints() + 100 * Math.floor(timer.getRemainingSeconds())
+            scoreText.setText(`Score: ${finalScore}`)
+
+            // Post scores
+            postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), true, gameLogic.getPlayerMoves())
+        }
     }
+}
+
+/**
+ * Creates a post request to post game scores.
+ * @param {Number} score Final player score
+ * @param {Number} duration Total time, in seconds, that the game took
+ * @param {Boolean} winOrLoss Whether the game was a win or a loss.
+ * @param {Number} numMoves Number of tiles user clicked before the game ended.
+ */
+async function postScores(score, duration, winOrLoss, numMoves) {
+    // UserID should be declared in a separate html <script> tag
+    if (userID) {
+        // Package up req body data
+        const data = {
+            user_id: userID,
+            score: score,
+            duration: duration,
+            win: winOrLoss,
+            player_moves: numMoves
+        }
+
+        const response = await fetch(`/api/games`, {
+            method: 'POST', 
+            body: JSON.stringify(data)
+        })
+
+        console.log(JSON.stringify(response))
+    } else {
+        console.log("userID was not defined in a separate script!")
+    }
+}
+
+const outOfTime_Callback = () => {
+        
+    // Stop the game
+    timerEvent.paused = true
+    playable = false
+    endText.setText(`Refresh to try again!`)
+
+    // Force reveal mines
+    const listOfMines = gameLogic.gameEndingLogic()
+    listOfMines.forEach((coordPair) => {
+        const index = gameLogic.getTile(coordPair.x, coordPair.y).getTileIndex()
+        map.putTileAt(index, coordPair.x, coordPair.y)
+    })
+
+    // Post scores
+    postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), false, gameLogic.getPlayerMoves())
 }

@@ -154,6 +154,20 @@ class GameLogic {
     }
 
     /**
+     * @returns the amount of tiles left to uncover to win the game
+     */
+    getRemainingTiles() {
+        return this.remainingTiles
+    }
+
+    /**
+     * @returns the number of player moves.
+     */
+    getPlayerMoves() {
+        return this.playerMoves
+    }
+
+    /**
      * A function that returns all tiles that must be revealed, after a game-losing move.
      * @returns an Object containing an array of Tiles to iterate over and reveal.
      */
