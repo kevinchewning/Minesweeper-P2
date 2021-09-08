@@ -5,7 +5,8 @@ User.hasMany(Game, {
     foreignKey: 'user_id'
 })
 
-Game.hasOne(User, {
+
+Game.belongsTo(User, {
     foreignKey: 'user_id'
 })
 

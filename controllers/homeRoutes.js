@@ -1,5 +1,7 @@
 const router = require('express').Router()
+const { Game, User } = require('../models')
 const withAuth = require('../utils/auth')
+
 
 // Render root page
 router.get('/', withAuth, async (req, res) => {
@@ -10,12 +12,18 @@ router.get('/', withAuth, async (req, res) => {
         
         res.render('minesweeper', {
             //game: gameInstance,
+            user: req.session.user,
             logged_in: req.session.logged_in
         })
 
     } catch (err) {
         res.status(500).json(err)
     }
+})
+
+// Render signup page
+router.get('/signup', async (req, res) => {
+    res.render('signup');
 })
 
 // Render login page
@@ -30,31 +38,137 @@ router.get('/login', async (req, res) => {
     } catch (err) {
         res.status(500).json(err)
     }
-})
+});
 
 // Render stats and leaderboards
-router.get('/leaderboards', async (req, res) => {
+router.get('/leaderboards', withAuth, async (req, res) => {
     try {
-        let userStats = undefined
+        //Retrieve Data Before Converting to Stats
+        const dbUserGameData = await Game.findAll({
+            where: {
+                user_id: req.session.user.id
+            },
+            attributes: ['score', 'duration', 'win' , 'player_moves']
+        })
 
-        // Check to see if user is logged in. If they are, get the userStats
-        if (res.session.logged_in) {
-            userStats = fetch(`/api/stats/${res.session.user.id}`)
+        const dbGameData = await Game.findAll({
+            where: {
+                win: true
+            },
+            attributes: ['score', 'created_at'],
+            include: {
+                model: User,
+                attributes: ['username']
+            }
+        })
+
+        const userGameData = dbUserGameData.map((x) => x.get({ plain: true }))
+
+        const gameData = dbGameData.map((x) => x.get({ plain: true }))
+
+        //Average Score
+        const userAvgScore = () => {
+            let totalScore = 0;
+
+            for(i = 0; i < userGameData.length; i++) {
+                totalScore += userGameData.score
+            }
+
+            return totalScore / userGameData.length;
+        }
+
+        //# of Wins
+        const userWins = () => {
+            let wins = 0
+
+            for(i = 0; i < userGameData.length; i++) {
+                if (userGameData.win) {
+                    wins++
+                }
+            }
+
+            return wins;
+        }
+
+         //# of Losses
+         const userLosses = () => {
+            let losses = 0
+
+            for(i = 0; i < userGameData.length; i++) {
+                if (!userGameData.win) {
+                    losses++
+                }
+            }
+
+            return losses;
+        }
+
+        //Best Score
+        const bestScore = () => {
+            let topScore = 0
+
+            for(i = 0; i < userGameData.length; i++) {
+                if(userGameData.score > topScore) {
+                    topScore = userGameData.score
+                }
+            }
+
+            return topScore;
+        }
+
+        //Worst score
+        const worstScore = () => {
+            let bottomScore = 10000000000
+
+            for(i = 0; i < userGameData.length; i++) {
+                if(userGameData.score < bottomScore) {
+                    bottomScore = userGameData.score
+                }
+            }
+
+            return bottomScore;
+        }
+
+        //Immediate Losses
+        const immediateLosses = () => {
+            let immediateLosses = 0
+
+            for(i = 0; i < userGameData.length; i++) {
+                if (userGameData.player_moves === 1) {
+                    immediateLosses++
+                }
+            }
+
+            return immediateLosses;
+        }
+
+        //Create stats object
+        const stats = {
+            totalGames: userGameData.length,
+            avgScore: userAvgScore(),
+            wins: userWins(),
+            losses: userLosses(),
+            bestScore: bestScore(),
+            worstScore: worstScore(),
+            immediateLosses: immediateLosses()
         }
         
-        // get leaderboards to be displayed
-        const leaderboardList = fetch('/api/leaderboards', {
-            method: 'GET'
-        })
 
-        // render page and send data for handlebars
+        //Sort game data by score
+        const leaders = gameData.sort((a, b) => b.score - a.score)
+        
+        leaders.splice(10)
+
+        //Render page with new objects
         res.render('leaderboards', {
-            logged_in: req.session.logged_in,
-            userStats: userStats,
-            leaderboardList: leaderboardList
-        })
+           stats,
+           leaders,
+           user: req.session.user,
+           logged_in: req.session.logged_in
+       })
 
     } catch (err) {
+        console.log(err)
         res.status(500).json(err)
     }
 })
