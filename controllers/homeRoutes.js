@@ -12,6 +12,7 @@ router.get('/', withAuth, async (req, res) => {
         
         res.render('minesweeper', {
             //game: gameInstance,
+            user: req.session.user,
             logged_in: req.session.logged_in
         })
 
