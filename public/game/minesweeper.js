@@ -3,7 +3,7 @@ var config = {
     type: Phaser.AUTO,
     width: 600,
     height: 700,
-    parent: 'body',
+    parent: 'minesweeper-game',
     backgroundColor: '#dfe8f5',
     scene: {
         preload: preload,
@@ -138,26 +138,27 @@ function update(time, delta) {
                 }
             }
         
+            // Check to see if player has won
+            if (gameLogic.getRemainingTiles() === 0) {
+                // Pause the clock
+                timerEvent.paused = true
+                playable = false
+
+                endText.setText(`YOU WON!`)
+
+                // Caluclate final score
+                const finalScore = gameLogic.getPoints() + 100 * Math.floor(timer.getRemainingSeconds())
+                scoreText.setText(`Score: ${finalScore}`)
+
+                // Post scores
+                postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), true, gameLogic.getPlayerMoves())
+            }
+
         } else if (!this.input.manager.activePointer.primaryDown) {
             // User released left click
             recievingInput = false
         }
 
-        // Check to see if player has won
-        if (gameLogic.getRemainingTiles() === 0) {
-            // Pause the clock
-            timerEvent.paused = true
-            playable = false
-
-            endText.setText(`YOU WON!`)
-
-            // Caluclate final score
-            const finalScore = gameLogic.getPoints() + 100 * Math.floor(timer.getRemainingSeconds())
-            scoreText.setText(`Score: ${finalScore}`)
-
-            // Post scores
-            postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), true, gameLogic.getPlayerMoves())
-        }
     }
 }
 
