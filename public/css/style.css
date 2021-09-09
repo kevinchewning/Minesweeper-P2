@@ -2,8 +2,8 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 30px;
     letter-spacing: 3px;
-    margin: 10px;
-    padding: 10px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     background-color: #4DA8DA;
     color: #EEFBFB;
@@ -13,11 +13,23 @@
     color: black;
 }
 
+header {
+    display: flex;
+    justify-content: center;
+}
+
 h1 {
     text-align: center;
     color: #203647;
     text-shadow: #EEFBFB; 
-    text-decoration: underline;
+}
+
+.header-title {
+    width: fit-content;
+    padding: 10px;
+    background-color: #EEFBFB;
+    border-radius: 5px;
+    box-shadow: #203647 5px 5px;
 }
 
 h2, h4, h5 {
@@ -25,6 +37,16 @@ h2, h4, h5 {
     color: #203647;
 }
 
+.flex-body {
+    display: flex;
+    justify-content: center;
+}
+
 .lb-title {
     width: 100%;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
 }

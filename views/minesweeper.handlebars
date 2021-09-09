@@ -1,12 +1,11 @@
 {{!-- If logged in allow user to play the game --}}
 {{#if logged_in}}
-<section>
-    <h1>MINESWEEPER</h1>
-        {{!-- Render the Minesweeper game here?? --}}
-        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
-        <script src="/game/minesweeper-tile.js"></script>
-        <script src="/game/minesweeper-logic.js"></script>
-        <script src="/game/minesweeper.js"></script>
+<section id="game-container">
+    {{!-- Render the Minesweeper game here?? --}}
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script src="/game/minesweeper-tile.js"></script>
+    <script src="/game/minesweeper-logic.js"></script>
+    <script src="/game/minesweeper.js"></script>
 </section>
 
 {{else}}

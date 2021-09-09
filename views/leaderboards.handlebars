@@ -1,11 +1,10 @@
 <h2 class= "lb-title">LEADERBOARDS</h2>
-<br>
-<br>
+
 {{!-- Stats --}}
 {{#if logged_in}}
 {{#if stats.totalGames}}
 <div>
-    <h4>{{user.username}} Game Stats</h4>
+    <h4>{{user.username}}'s Game Stats</h4>
     <ul>
         <li>{{stats.wins}}</li>
         <li>{{stats.losses}}</li>
@@ -21,15 +20,17 @@
 {{/if}}
 
 {{!-- Leaderboard --}}
-<div>
+<div class="leaderboard-container">
     <h4>Global Leaderboard</h4>
-{{#each leaders}}
-    <div>
-        {{user.username}}
-        {{score}}
-        {{format_date created_at}}
+    <div class="leaders-container">
+        {{#each leaders}}
+        <div class="leaderboard-line">
+            <div>{{user.username}}</div>
+            <div>{{score}}</div>
+            <div>{{format_date created_at}}</div>
+        </div>
+        {{/each}}
     </div>
-{{/each}}
 </div>
 
 
