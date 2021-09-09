@@ -20,17 +20,20 @@
       <ul class="pure-menu-list">
         {{#if logged_in}}
         <li class="pure-menu-item">
-            <a href="../minesweeper" class="pure-menu-link navbar">Play</a>
+            <a href="/" class="pure-menu-link navbar">Play</a>
         </li>
         <li class="pure-menu-item">
-            <a href="../leaderboards" class="pure-menu-link navbar">Leaderboard</a>
+            <a href="/leaderboards" class="pure-menu-link navbar">Leaderboard</a>
         </li>
         <li class="pure-menu-item">
             <a id="logout" class="pure-menu-link navbar">Logout</a>
         </li>
         {{else}}
         <li class="pure-menu-heading pure-menu-link">
-            <a href="../signup" class="pure-menu-link navbar">SIGNUP HERE</a>
+            <a href="/signup" class="pure-menu-link navbar">Signup</a>
+        </li>
+        <li class="pure-menu-heading pure-menu-link">
+            <a href="/login" class="pure-menu-link navbar">Login</a>
         </li>
         {{/if}}
     </ul>
