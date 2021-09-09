@@ -3,15 +3,10 @@
 <section>
     <h1>MINESWEEPER</h1>
         {{!-- Render the Minesweeper game here?? --}}
-       <script src="../game/minesweeper.js"></script>
-    <div>
-        <style scoped="">
-            .button-xlarge {
-                font-size: 125%;
-            }
-        </style>
-        <button class="button-xlarge pure-button">START GAME</button>
-    </div> 
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+        <script src="/game/minesweeper-tile.js"></script>
+        <script src="/game/minesweeper-logic.js"></script>
+        <script src="/game/minesweeper.js"></script>
 </section>
 
 {{else}}

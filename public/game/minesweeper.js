@@ -28,7 +28,7 @@ const timeLimit = 180
 
 function preload() {
     
-    this.load.image('defaultTiles', '../assets/sprites/defaultTiles.png')
+    this.load.image('defaultTiles', '/assets/sprites/defaultTiles.png')
 }
 
 function create() {
