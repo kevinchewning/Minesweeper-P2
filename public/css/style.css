@@ -37,7 +37,7 @@ h2, h4, h5 {
     color: #203647;
 }
 
-.flex-body {
+#minesweeper-game {
     display: flex;
     justify-content: center;
 }
