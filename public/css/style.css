@@ -20,7 +20,7 @@ h1 {
     text-decoration: underline;
 }
 
-h2, h4, h5 {
+h2, h3, h4, h5 {
     text-align: center;
     color: #203647;
 }
@@ -28,3 +28,32 @@ h2, h4, h5 {
 .lb-title {
     width: 100%;
 }
+
+.ms2 {
+    text-align: center;
+    color: #203647; 
+    text-decoration: underline;
+}
+.ms3 {
+    text-align: center;
+    color: #203647; 
+}
+
+.nogame {
+    width: 100%;
+}
+
+.lbtable {
+    justify-content: left;
+    width: 100%;
+}
+
+.tabletitle{
+    padding-left: 65px;
+    padding-top: 100px;
+    text-decoration: underline;
+    font-weight: bold;  
+}
+
+
+

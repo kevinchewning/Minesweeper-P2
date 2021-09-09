@@ -4,14 +4,14 @@ const withAuth = require('../utils/auth')
 
 
 // Render root page
-router.get('/', withAuth, async (req, res) => {
+router.get('/minesweeper', withAuth, async (req, res) => {
     try {
         /* 
             const gameInstance = initialize the game here
         */
         
         res.render('minesweeper', {
-            //game: gameInstance,
+            game: gameInstance,
             user: req.session.user,
             logged_in: req.session.logged_in
         })
@@ -31,7 +31,7 @@ router.get('/login', async (req, res) => {
     try {
         // if the user is already logged in, redirect
         if (req.session.logged_in) {
-            res.redirect('/')
+            res.redirect('/minesweeper')
         } else {
             res.render('login')
         }
