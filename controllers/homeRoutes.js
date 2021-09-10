@@ -63,6 +63,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
         })
 
         const userGameData = dbUserGameData.map((x) => x.get({ plain: true }))
+        console.log(userGameData);
 
         const gameData = dbGameData.map((x) => x.get({ plain: true }))
 
@@ -71,7 +72,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let totalScore = 0;
 
             for(i = 0; i < userGameData.length; i++) {
-                totalScore += userGameData.score
+                totalScore += userGameData[i].score
             }
 
             return totalScore / userGameData.length;
@@ -82,7 +83,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let wins = 0
 
             for(i = 0; i < userGameData.length; i++) {
-                if (userGameData.win) {
+                if (userGameData[i].win) {
                     wins++
                 }
             }
@@ -95,7 +96,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let losses = 0
 
             for(i = 0; i < userGameData.length; i++) {
-                if (!userGameData.win) {
+                if (!userGameData[i].win) {
                     losses++
                 }
             }
@@ -108,8 +109,8 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let topScore = 0
 
             for(i = 0; i < userGameData.length; i++) {
-                if(userGameData.score > topScore) {
-                    topScore = userGameData.score
+                if(userGameData[i].score > topScore) {
+                    topScore = userGameData[i].score
                 }
             }
 
@@ -121,8 +122,8 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let bottomScore = 10000000000
 
             for(i = 0; i < userGameData.length; i++) {
-                if(userGameData.score < bottomScore) {
-                    bottomScore = userGameData.score
+                if(userGameData[i].score < bottomScore) {
+                    bottomScore = userGameData[i].score
                 }
             }
 
@@ -134,7 +135,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
             let immediateLosses = 0
 
             for(i = 0; i < userGameData.length; i++) {
-                if (userGameData.player_moves === 1) {
+                if (userGameData[i].player_moves === 1) {
                     immediateLosses++
                 }
             }
