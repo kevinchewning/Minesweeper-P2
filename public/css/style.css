@@ -9,6 +9,10 @@
     color: #EEFBFB;
 }
 
+nav {
+    margin: 10px 0;
+}
+
 .navbar {
     color: black;
 }
@@ -22,6 +26,7 @@ h1 {
     text-align: center;
     color: #203647;
     text-shadow: #EEFBFB; 
+    margin: 10px 0;
 }
 
 .header-title {
@@ -37,16 +42,48 @@ h2, h4, h5 {
     color: #203647;
 }
 
-#minesweeper-game {
+#minesweeper-game, .flex-body {
     display: flex;
     justify-content: center;
 }
 
 .lb-title {
-    width: 100%;
+    flex: 0 0 100%;
+    margin: 10px 0;
 }
 
 #game-container {
     display: flex;
     justify-content: center;
+}
+
+.leaderboards {
+    flex: 0 0 90%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.leaderboards-message, .leaderboard-container {
+    margin: 10px 0;
+    flex: 0 0 100%;
+}
+
+.leaders-container {
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 90%;
+}
+
+.leaderboard-line {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    border-bottom: black 2px;
+}
+
+.leaderboard-line div {
+    display: inline-flex;
+    flex: 0 0 30%;
 }

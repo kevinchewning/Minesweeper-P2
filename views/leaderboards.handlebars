@@ -1,37 +1,37 @@
-<h2 class= "lb-title">LEADERBOARDS</h2>
-
-{{!-- Stats --}}
-{{#if logged_in}}
-{{#if stats.totalGames}}
-<div>
-    <h4>{{user.username}}'s Game Stats</h4>
-    <ul>
-        <li>{{stats.wins}}</li>
-        <li>{{stats.losses}}</li>
-        <li>{{stats.avgScore}}</li>
-        <li>{{stats.bestScore}}</li>
-        <li>{{stats.worstScore}}</li>
-        <li>{{stats.immediateLosses}}</li>
-    </ul>
-</div>
-{{else}}
-<h4>{{user.username}} hasn't played any games!</h4>
-{{/if}}
-{{/if}}
-
-{{!-- Leaderboard --}}
-<div class="leaderboard-container">
-    <h4>Global Leaderboard</h4>
-    <div class="leaders-container">
-        {{#each leaders}}
-        <div class="leaderboard-line">
-            <div>{{user.username}}</div>
-            <div>{{score}}</div>
-            <div>{{format_date created_at}}</div>
-        </div>
-        {{/each}}
+<div class="leaderboards">  
+    {{!-- Stats --}}
+    <h4 class="leaderboards-message">{{user.username}}'s Game Stats</h4>
+    {{#if logged_in}}
+    {{#if stats.totalGames}}
+    <div>
+        <ul>
+            <li>Wins: {{stats.wins}}</li>
+            <li>Losses: {{stats.losses}}</li>
+            <li>Average Score: {{stats.avgScore}}</li>
+            <li>Best Score: {{stats.bestScore}}</li>
+            <li>Worst Score: {{stats.worstScore}}</li>
+            <li>Immediate Losses: {{stats.immediateLosses}}</li>
+        </ul>
     </div>
-</div>
+    {{else}}
+    <h4 class="leaderboards-message">{{user.username}} hasn't played any games!</h4>
+    {{/if}}
+    {{/if}}
+
+    {{!-- Leaderboard --}}
+    <h4 class="leaderboards-message">Global Leaderboard</h4>
+    <div class="leaderboard-container">
+        <div class="leaders-container">
+            {{#each leaders}}
+            <div class="leaderboard-line">
+                <div>#{{plusOne @index}}:   {{user.username}}</div>
+                <div>{{score}}</div>
+                <div>{{format_date created_at}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>  
 
 
 

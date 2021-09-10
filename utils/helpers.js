@@ -11,5 +11,9 @@ module.exports = {
 
     isEqual: (a, b) => {
       return a === b;
+    },
+
+    plusOne: (integer) => {
+      return integer + 1;
     }
 };
