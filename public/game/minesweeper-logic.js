@@ -35,7 +35,7 @@ class GameLogic {
                 for (let j = 0; j < xTiles; j++) {
                     const hasMine = () => {
                         // Check if the current index resides in MineList
-                        if (mineList.indexOf(i * 10 + j) === -1) {
+                        if (mineList.indexOf(i * xTiles + j + 1) === -1) {
                             return false
                         } else {
                             return true
@@ -50,7 +50,7 @@ class GameLogic {
                 // Push the current row
                 tileGrid.push(currentRow)
             }
-            
+
             // Return grid
             return tileGrid
         }
@@ -128,6 +128,7 @@ class GameLogic {
                 logic: this.gameEndingLogic()
             }
         } else if (clickedTile.getAdjacentMines() === 0) {
+            this.remainingTiles--
             return {
                 logicType: 'massUncover',
                 logic: this.massUncoverLogic(xCoord, yCoord)

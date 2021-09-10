@@ -1,11 +1,22 @@
 {{!-- If logged in allow user to play the game --}}
 {{#if logged_in}}
-<section id="minesweeper-game">
-    {{!-- Render the Minesweeper game here?? --}}
+
+<section>
+    
+    <br>
+    <h3>Hold shift and click to flag a suspected Mine.</h3>
+    <h3>Click a tile to reveal.</h3>
+    <h3>Time starts now. Good luck!</h3>
+    <br>
+
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
     <script src="/game/minesweeper-tile.js"></script>
     <script src="/game/minesweeper-logic.js"></script>
     <script src="/game/minesweeper.js"></script>
+    
+    <div id="minesweeper-game">
+        {{!-- Phaser creates a canvas element here --}}
+    </div>
 </section>
 
 {{else}}

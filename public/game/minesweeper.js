@@ -24,7 +24,7 @@ var scoreText
 var timerText
 var endText
 
-const timeLimit = 180
+const timeLimit = 300
 
 function preload() {
     
@@ -112,6 +112,8 @@ function update(time, delta) {
 
                     // We just uncovered a tile, now we must check for 0 or a mine for further game logic.
                     const additionalLogic = gameLogic.tileUncovered(pointerTileX, pointerTileY)
+                    
+                    endText.setText(`Remaining Tiles: ${gameLogic.getRemainingTiles()}`)
 
                     if (additionalLogic && additionalLogic.logicType === 'gameOver') {
                         // Update tile displays
