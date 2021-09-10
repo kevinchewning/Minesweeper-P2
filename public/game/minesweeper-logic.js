@@ -16,7 +16,7 @@ class GameLogic {
 
         // Declare game counters
         this.score = 0
-        this.playerMoves
+        this.playerMoves = 0
         this.remainingTiles = (xTiles * yTiles) - numMines
 
         // Generate grid of MinesweeperTile objects

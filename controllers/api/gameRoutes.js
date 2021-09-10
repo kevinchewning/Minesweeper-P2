@@ -5,6 +5,7 @@ const { Game } = require('../../models')
 router.post('/', async (req, res) => {
     try {
         // create game
+        console.log(req.body)
         const gameData = await Game.create(req.body)
 
         // respond with success code and a copy of the new Game object

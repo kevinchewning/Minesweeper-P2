@@ -118,16 +118,17 @@ function update(time, delta) {
                         additionalLogic.logic.forEach((coordPair) => {
                             const index = gameLogic.getTile(coordPair.x, coordPair.y).getTileIndex()
                             map.putTileAt(index, coordPair.x, coordPair.y)
-                            
-                            // Pause the clock
-                            timerEvent.paused = true
-                            playable = false
-
-                            endText.setText(`Refresh to try again!`)
-
-                            // Post scores
-                            postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), false, gameLogic.getPlayerMoves())
                         })
+
+                        // Pause the clock
+                        timerEvent.paused = true
+                        playable = false
+
+                        endText.setText(`Refresh to try again!`)
+
+                        // Post scores
+                        postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), false, gameLogic.getPlayerMoves())
+                        
                     } else if (additionalLogic && additionalLogic.logicType === 'massUncover') {
                         // Update tile displays
                         additionalLogic.logic.forEach((coordPair) => {
@@ -183,10 +184,10 @@ async function postScores(score, duration, winOrLoss, numMoves) {
 
         const response = await fetch(`/api/games`, {
             method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
 
-        console.log(JSON.stringify(response))
     } else {
         console.log("userID was not defined in a separate script!")
     }
