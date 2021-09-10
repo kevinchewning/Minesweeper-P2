@@ -75,7 +75,7 @@ router.get('/leaderboards', withAuth, async (req, res) => {
                 totalScore += userGameData[i].score
             }
 
-            return totalScore / userGameData.length;
+            return Math.round(totalScore / userGameData.length);
         }
 
         //# of Wins
