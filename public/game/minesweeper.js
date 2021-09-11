@@ -154,7 +154,7 @@ function update(time, delta) {
                 scoreText.setText(`Score: ${finalScore}`)
 
                 // Post scores
-                postScores(gameLogic.getPoints(), Math.ceil(timer.getElapsedSeconds()), true, gameLogic.getPlayerMoves())
+                postScores(finalScore, Math.ceil(timer.getElapsedSeconds()), true, gameLogic.getPlayerMoves())
             }
 
         } else if (!this.input.manager.activePointer.primaryDown) {
