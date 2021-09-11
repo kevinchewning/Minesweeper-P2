@@ -18,6 +18,9 @@ Allows the user to play Minesweeper and record their stats via user authenticati
 ## Installation
 No installation required. User only needs to visit the website in their browser.
 
+Site deployed @ https://intense-lake-83506.herokuapp.com/
+Project Repository @ https://github.com/kevinchewning/Minesweeper-P2
+
 ## Usage
 Project is opensource and may be used by anyone!
 
