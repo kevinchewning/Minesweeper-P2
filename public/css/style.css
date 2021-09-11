@@ -47,6 +47,13 @@ h2, h4, h5 {
     justify-content: center;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .lb-title {
     flex: 0 0 100%;
     margin: 10px 0;
@@ -57,10 +64,19 @@ h2, h4, h5 {
     justify-content: center;
 }
 
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    margin: 10px;
+}
+
 .leaderboards {
     flex: 0 0 90%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .leaderboards-message, .leaderboard-container {
@@ -86,4 +102,13 @@ h2, h4, h5 {
 .leaderboard-line div {
     display: inline-flex;
     flex: 0 0 30%;
+}
+
+.stats-headers {
+    border-bottom: solid #203647 5px;
+}
+
+.leaderboard-headers {
+    color: #203647;
+    font-weight: 1000;
 }
