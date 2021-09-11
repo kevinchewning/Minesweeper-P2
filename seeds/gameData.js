@@ -16,21 +16,21 @@ const seedGames = async () => {
             },
             {
                 user_id: userIDs[1].id,
-                score: 15000,
+                score: 5000,
                 duration: 250000,
                 win: true,
                 player_moves: 48
             },
             {
                 user_id: userIDs[3].id,
-                score: 5000,
+                score: 7433,
                 duration: 100000,
                 win: false,
                 player_moves: 18
             },
             {
                 user_id: userIDs[0].id,
-                score: 100000,
+                score: 1790,
                 duration: 120000,
                 win: true,
                 player_moves: 66
@@ -44,7 +44,7 @@ const seedGames = async () => {
             },
             {
                 user_id: userIDs[1].id,
-                score: 120000,
+                score: 3347,
                 duration: 90000,
                 win: true,
                 player_moves: 45
