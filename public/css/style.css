@@ -59,6 +59,10 @@ h2, h4, h5 {
     margin: 10px 0;
 }
 
+#refresh-button {
+    margin: 10px 0;
+}
+
 #game-container {
     display: flex;
     justify-content: center;
