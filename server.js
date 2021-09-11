@@ -23,7 +23,9 @@ const hbs = handlebars.create({ helpers });
 
 const sess = {
   secret: 'Mines go boom',
-  cookie: {},
+  cookie: {
+    maxAge: 60 * 60 * 1000
+  },
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
